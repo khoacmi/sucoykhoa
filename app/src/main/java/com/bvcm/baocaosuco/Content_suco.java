@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class Content_suco extends AppCompatActivity {
     ListView lvSuco;
-    ArrayList<Suco_model> arraySuco;
+    ArrayList<Suco_model> arraySuco= new ArrayList<>();
     Suco_adapter adapter;
     Button btn_add_sc;
     FirebaseFirestore db;
@@ -40,6 +40,7 @@ public class Content_suco extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_content_suco);
         btn_add_sc = (Button) findViewById(R.id.btn_add_sc);
         Load_Suco();
@@ -113,11 +114,14 @@ public class Content_suco extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Load_Suco();
+    }
     public void Load_Suco(){
         lvSuco = (ListView) findViewById(R.id.listviewSuco);
-        arraySuco = new ArrayList<>();
-        db = FirebaseFirestore.getInstance();
+        arraySuco.clear();
         db.collection("User/pnkhoa/suco")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
